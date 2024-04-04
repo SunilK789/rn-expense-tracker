@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
+import ExpensesOutput from "../../components/Expenses/ExpensesOutput";
+import { DUMMY_EXPENSES } from "../../data/dummy-data";
 
 const RecentExpenses = () => {
   return (
-    <View>
-      <Text>Recent Expenses</Text>
-    </View>
+    <ExpensesOutput expensesPeriod="Last 7 days" expenses={DUMMY_EXPENSES} />
   );
 };
 
