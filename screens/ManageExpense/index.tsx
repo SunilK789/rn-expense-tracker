@@ -13,14 +13,24 @@ const ManageExpense = ({ route, navigation }) => {
     title: isEditing ? "Edit Expense" : "Add Expense",
   });
 
-  function deleteExpenseHandler() {}
-  function cancelHandler() {}
-  function editAddHandler() {}
+  function deleteExpenseHandler() {
+    navigation.goBack();
+  }
+  function cancelHandler() {
+    navigation.goBack();
+  }
+  function editAddHandler() {
+    navigation.goBack();
+  }
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button onPress={editAddHandler} mode="flat" style={styles.button}>{isEditing ? 'Update' : 'Add'}</Button>
-        <Button onPress={cancelHandler} style={styles.button}>Cancel</Button>
+        <Button onPress={editAddHandler} mode="flat" style={styles.button}>
+          {isEditing ? "Update" : "Add"}
+        </Button>
+        <Button onPress={cancelHandler} style={styles.button}>
+          Cancel
+        </Button>
       </View>
       {isEditing && (
         <View style={styles.deleteContainer}>
