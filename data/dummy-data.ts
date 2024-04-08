@@ -9,7 +9,7 @@ export const DUMMY_EXPENSES = [
     id: "e2",
     description: "A pair of trousers",
     amount: 59.99,
-    date: new Date("2024-12-21"),
+    date: new Date("2024-01-21"),
   },
   {
     id: "e3",
@@ -29,4 +29,24 @@ export const DUMMY_EXPENSES = [
     amount: 59.99,
     date: new Date("2024-12-25"),
   },
+  {
+    id: "e6",
+    description: "Another book",
+    amount: 59.99,
+    date: new Date("2024-12-25"),
+  },
+  {
+    id: "e7",
+    description: "Another book",
+    amount: 59.99,
+    date: new Date("2024-12-25"),
+  },
+
+  {
+    id: "e8",
+    description: "Another book",
+    amount: 59.99,
+    date: new Date("2024-12-25"),
+  },
+
 ];

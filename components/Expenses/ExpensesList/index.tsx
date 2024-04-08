@@ -3,8 +3,8 @@ import React from "react";
 import ExpenseItem from "../ExpenseItem";
 
 const ExpensesList = ({ expenses }) => {
-  const renderedExpenseItem = (itemData) => {
-    return <ExpenseItem expense={itemData.item} />;
+  const renderedExpenseItem = (itemData: any) => {
+    return <ExpenseItem {...itemData.item} />;
   };
   return (
     <View>
