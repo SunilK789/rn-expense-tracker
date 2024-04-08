@@ -5,11 +5,13 @@ import { getFormattedDate } from "../../../utils/date";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "../../../constants/screens";
 
-const ExpenseItem = ({ description, amount, date }) => {
+const ExpenseItem = ({ id, description, amount, date }) => {
   const navigation = useNavigation();
 
   const onExpenseItemPressed = () => {
-    navigation.navigate(SCREENS.MANAGE_SCREEN);
+    navigation.navigate(SCREENS.MANAGE_SCREEN, {
+      expenseId: id,
+    });
   };
 
   return (
