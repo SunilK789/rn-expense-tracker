@@ -10,6 +10,7 @@ import {
   deleteExpense,
   updateExpense,
 } from "../../store/redux/expenseSlice";
+import ExpenseForm from "../../components/Expenses/ExpenseForm";
 
 const ManageExpense = ({ route, navigation }) => {
   const editExpenseId = route.params?.expenseId;
@@ -51,6 +52,9 @@ const ManageExpense = ({ route, navigation }) => {
   }
   return (
     <View style={styles.container}>
+      <View>
+        <ExpenseForm />
+      </View>
       <View style={styles.buttonContainer}>
         <Button onPress={editAddHandler} mode="flat" style={styles.button}>
           {isEditing ? "Update" : "Add"}
