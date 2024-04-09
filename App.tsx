@@ -11,7 +11,7 @@ import IconButton from "./components/UI/IconButton";
 import { SCREENS } from "./constants/screens";
 
 import { Provider } from "react-redux";
-import { store } from "./store/redux/store";
+import store from "./store/redux/store";
 
 const Stack = createNativeStackNavigator();
 const ButtomTabs = createBottomTabNavigator();

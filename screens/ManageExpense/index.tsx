@@ -4,22 +4,49 @@ import IconButton from "../../components/UI/IconButton";
 import { GlobalStyles } from "../../constants/styles";
 import { styles } from "./style";
 import Button from "../../components/UI/Button";
+import { useDispatch } from "react-redux";
+import {
+  addExpense,
+  deleteExpense,
+  updateExpense,
+} from "../../store/redux/expenseSlice";
 
 const ManageExpense = ({ route, navigation }) => {
-  const expenseIdExist = route.params?.expenseId;
-  const isEditing = !!expenseIdExist;
+  const editExpenseId = route.params?.expenseId;
+  const isEditing = !!editExpenseId;
+  const dispatch = useDispatch();
 
   navigation.setOptions({
     title: isEditing ? "Edit Expense" : "Add Expense",
   });
 
   function deleteExpenseHandler() {
+    dispatch(deleteExpense(editExpenseId));
     navigation.goBack();
   }
   function cancelHandler() {
     navigation.goBack();
   }
   function editAddHandler() {
+    if (editExpenseId) {
+      dispatch(
+        updateExpense({
+          id: editExpenseId,
+          description: "Test!!",
+          amount: 19.99,
+          date: new Date(),
+        })
+      );
+    } else {
+      dispatch(
+        addExpense({
+          id: new Date().toString() + Math.random(),
+          description: "Added Test",
+          amount: 29.99,
+          date: new Date(),
+        })
+      );
+    }
     navigation.goBack();
   }
   return (

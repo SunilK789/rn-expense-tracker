@@ -1,18 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface IExpenseProps {
-  id: string;
-  description: string;
-  amount: number;
-  date: Date;
-}
+import { DUMMY_EXPENSES } from "../../data/dummy-data";
+import { IExpenseProps } from "../../interfaces";
 
 interface ExpenseState {
-  expenses: IExpenseProps[];
+  expensesList: IExpenseProps[];
 }
 
 const initialState: ExpenseState = {
-  expenses: [],
+  expensesList: DUMMY_EXPENSES,
 };
 
 export const expenseSlice = createSlice({
@@ -20,16 +15,26 @@ export const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpense: (state, action: PayloadAction<IExpenseProps>) => {
-      state.expenses.push(action.payload);
+      state.expensesList.push(action.payload);
     },
+    updateExpense: (state, action: PayloadAction<IExpenseProps>) => {
+      const index = state.expensesList.findIndex(
+        (expense) => expense.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.expensesList[index] = action.payload;
+      }
+    },
+
     deleteExpense: (state, action: PayloadAction<string>) => {
-      state.expenses = state.expenses.filter(
+      state.expensesList = state.expensesList.filter(
         (expense) => expense.id !== action.payload
       );
     },
   },
 });
 
-export const { addExpense, deleteExpense } = expenseSlice.actions;
+export const { addExpense, updateExpense, deleteExpense } =
+  expenseSlice.actions;
 
 export default expenseSlice.reducer;
