@@ -6,19 +6,23 @@ interface IInputProps {
   label: string;
   textInputCongig?: TextInputProps;
   style?: string;
+  invalid?: boolean;
 }
 
-const Input = ({ label, textInputConfig, style }) => {
+const Input = ({ label, textInputConfig, style, invalid }) => {
+  const inputStyles: any = [styles.input];
+  if (textInputConfig && textInputConfig.multiline) {
+    inputStyles.push(styles.inputMultiline);
+  }
+  if (invalid) {
+    inputStyles.push(styles.invalidInput);
+  }
   return (
     <View style={[styles.inputContainer, style]}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[
-          styles.input,
-          textInputConfig?.multiline && styles.inputMultiline,
-        ]}
-        {...textInputConfig}
-      />
+      <Text style={[styles.label, invalid && styles.invalidLabel]}>
+        {label}
+      </Text>
+      <TextInput style={inputStyles} {...textInputConfig} />
     </View>
   );
 };

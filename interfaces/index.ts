@@ -6,8 +6,7 @@ export interface IExpenseProps {
 }
 
 export interface IFormValuesProps {
-  Amount: number;
-  Date: string;
-  Description: string;
+  Amount: { value: number; isValid: boolean };
+  Date: { value: string; isValid: boolean };
+  Description: { value: string; isValid: boolean };
 }
-

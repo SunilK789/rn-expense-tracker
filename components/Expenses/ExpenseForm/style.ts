@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { GlobalStyles } from "../../../constants/styles";
 
 export const styles = StyleSheet.create({
   container: {
@@ -31,4 +32,10 @@ export const styles = StyleSheet.create({
     minWidth: 120,
     marginHorizontal: 8,
   },
+  errorText: {
+    textAlign: "center",
+    color: GlobalStyles.colors.error500,
+    margin: 8,
+    },
+  
 });

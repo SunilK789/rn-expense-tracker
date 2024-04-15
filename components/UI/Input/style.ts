@@ -23,4 +23,10 @@ export const styles = StyleSheet.create({
     minHeight: 100,
     textAlignVertical: "top",
   },
+  invalidLabel: {
+    color: GlobalStyles.colors.error500,
+  },
+  invalidInput: {
+    backgroundColor: GlobalStyles.colors.error50,
+  },
 });
