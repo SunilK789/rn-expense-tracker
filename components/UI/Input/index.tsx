@@ -5,11 +5,12 @@ import { styles } from "./style";
 interface IInputProps {
   label: string;
   textInputCongig?: TextInputProps;
+  style?: string;
 }
 
-const Input = ({ label, textInputConfig }) => {
+const Input = ({ label, textInputConfig, style }) => {
   return (
-    <View style={styles.inputContainer}>
+    <View style={[styles.inputContainer, style]}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={[

@@ -3,19 +3,25 @@ import React from "react";
 import IconButton from "../../components/UI/IconButton";
 import { GlobalStyles } from "../../constants/styles";
 import { styles } from "./style";
-import Button from "../../components/UI/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addExpense,
   deleteExpense,
   updateExpense,
 } from "../../store/redux/expenseSlice";
 import ExpenseForm from "../../components/Expenses/ExpenseForm";
+import { IFormValuesProps } from "../../interfaces";
+import { RootState } from "../../store/redux/store";
 
 const ManageExpense = ({ route, navigation }) => {
   const editExpenseId = route.params?.expenseId;
   const isEditing = !!editExpenseId;
   const dispatch = useDispatch();
+  const expenses: any = useSelector(
+    (state: RootState) => state.expense.expensesList
+  );
+
+  const defaultExpense = expenses.find((exp) => exp.id === editExpenseId);
 
   navigation.setOptions({
     title: isEditing ? "Edit Expense" : "Add Expense",
@@ -28,23 +34,23 @@ const ManageExpense = ({ route, navigation }) => {
   function cancelHandler() {
     navigation.goBack();
   }
-  function editAddHandler() {
+  function editAddHandler(expenseData: IFormValuesProps) {
     if (editExpenseId) {
       dispatch(
         updateExpense({
           id: editExpenseId,
-          description: "Test!!",
-          amount: 19.99,
-          date: new Date(),
+          description: expenseData.Description,
+          amount: expenseData.Amount,
+          date: new Date(expenseData.Date),
         })
       );
     } else {
       dispatch(
         addExpense({
           id: new Date().toString() + Math.random(),
-          description: "Added Test",
-          amount: 29.99,
-          date: new Date(),
+          description: expenseData.Description,
+          amount: expenseData.Amount,
+          date: new Date(expenseData.Date),
         })
       );
     }
@@ -53,16 +59,14 @@ const ManageExpense = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View>
-        <ExpenseForm />
+        <ExpenseForm
+          onCancel={cancelHandler}
+          onSubmit={editAddHandler}
+          isEditing={isEditing}
+          defaultExpense={defaultExpense}
+        />
       </View>
-      <View style={styles.buttonContainer}>
-        <Button onPress={editAddHandler} mode="flat" style={styles.button}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-        <Button onPress={cancelHandler} style={styles.button}>
-          Cancel
-        </Button>
-      </View>
+
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
