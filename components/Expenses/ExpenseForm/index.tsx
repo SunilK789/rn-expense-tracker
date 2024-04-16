@@ -85,7 +85,7 @@ const ExpenseForm = ({ onCancel, onSubmit, isEditing, defaultExpense }) => {
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: inputChangeHandler.bind(this, "Amount"),
-            value: inputValues.Amount.value,
+            value: inputValues.Amount.value.toString(),
           }}
         />
         <Input

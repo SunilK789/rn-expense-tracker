@@ -21,6 +21,7 @@ export const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpense: (state, action: PayloadAction<IExpenseProps>) => {
+      console.log("payLoad===>", action.payload);
       state.expensesList.push(action.payload);
     },
     updateExpense: (state, action: PayloadAction<IExpenseProps>) => {

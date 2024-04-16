@@ -40,11 +40,12 @@ const ManageExpense = ({ route, navigation }) => {
   function cancelHandler() {
     navigation.goBack();
   }
-  async function editAddHandler(expenseData: IFormValuesProps) {
+  async function editAddHandler(expenseData: any) {
+    console.log("expenseData===>", expenseData);
     const expense = {
-      description: expenseData.Description.value,
-      amount: expenseData.Amount.value,
-      date: new Date(expenseData.Date.value),
+      description: expenseData.Description,
+      amount: expenseData.Amount,
+      date: new Date(expenseData.date),
     };
 
     if (isEditing) {

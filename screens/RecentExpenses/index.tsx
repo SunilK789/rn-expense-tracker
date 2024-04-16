@@ -6,9 +6,11 @@ import { IExpenseProps } from "../../interfaces";
 import { RootState } from "../../store/redux/store";
 import { fetchExpense } from "../../utils/http";
 import { setExpenses } from "../../store/redux/expenseSlice";
+import LoadingOverlay from "../../components/UI/LoadingOverlay";
 
 const RecentExpenses = () => {
   const [expensesList, setExpensesList] = useState<IExpenseProps[]>();
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   const expenses: any = useSelector(
@@ -17,7 +19,9 @@ const RecentExpenses = () => {
 
   useEffect(() => {
     async function getExpenses() {
+      setIsLoading(true);
       const expenses = await fetchExpense();
+      setIsLoading(false);
       dispatch(setExpenses(expenses.reverse()));
     }
 
@@ -40,10 +44,16 @@ const RecentExpenses = () => {
 
   useEffect(() => {
     if (expenses.length > 0) {
+      setIsLoading(true);
       const recentExpenses = getRecentExpenses(expenses);
+      setIsLoading(false);
       setExpensesList(recentExpenses);
     }
   }, [expenses]);
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <ExpensesOutput
