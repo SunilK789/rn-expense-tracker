@@ -4,8 +4,14 @@ import { styles } from "./style";
 import { getFormattedDate } from "../../../utils/date";
 import { useNavigation } from "@react-navigation/native";
 import { SCREENS } from "../../../constants/screens";
+import { IExpenseProps } from "../../../interfaces";
 
-const ExpenseItem = ({ id, description, amount, date }) => {
+const ExpenseItem: React.FC<IExpenseProps> = ({
+  id,
+  description,
+  amount,
+  date,
+}) => {
   const navigation = useNavigation();
 
   const onExpenseItemPressed = () => {
@@ -24,7 +30,7 @@ const ExpenseItem = ({ id, description, amount, date }) => {
           <Text style={[styles.textBase, styles.description]}>
             {description}
           </Text>
-          <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+          <Text style={styles.textBase}>{date ? getFormattedDate(new Date(date)) : null}</Text>
         </View>
         <View style={styles.amountContainer}>
           <Text style={styles.amount}>{amount.toFixed(2)}</Text>

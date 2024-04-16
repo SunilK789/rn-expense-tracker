@@ -12,7 +12,11 @@ import {
 import ExpenseForm from "../../components/Expenses/ExpenseForm";
 import { IFormValuesProps } from "../../interfaces";
 import { RootState } from "../../store/redux/store";
-import { storeExpense } from "../../utils/http";
+import {
+  deleteExpenseFirebase,
+  storeExpense,
+  updateExpenseFirebase,
+} from "../../utils/http";
 
 const ManageExpense = ({ route, navigation }) => {
   const editExpenseId = route.params?.expenseId;
@@ -29,33 +33,37 @@ const ManageExpense = ({ route, navigation }) => {
   });
 
   function deleteExpenseHandler() {
+    deleteExpenseFirebase(editExpenseId);
     dispatch(deleteExpense(editExpenseId));
     navigation.goBack();
   }
   function cancelHandler() {
     navigation.goBack();
   }
-  function editAddHandler(expenseData: IFormValuesProps) {
-    if (editExpenseId) {
+  async function editAddHandler(expenseData: IFormValuesProps) {
+    const expense = {
+      description: expenseData.Description.value,
+      amount: expenseData.Amount.value,
+      date: new Date(expenseData.Date.value),
+    };
+
+    if (isEditing) {
+      updateExpenseFirebase(editExpenseId, expense);
+
       dispatch(
         updateExpense({
           id: editExpenseId,
-          description: expenseData.Description,
-          amount: expenseData.Amount,
-          date: new Date(expenseData.Date),
+          ...expense,
         })
       );
     } else {
+      const id = await storeExpense(expenseData);
       dispatch(
         addExpense({
-          id: new Date().toString() + Math.random(),
-          description: expenseData.Description,
-          amount: expenseData.Amount,
-          date: new Date(expenseData.Date),
+          id: id,
+          ...expense,
         })
       );
-
-      storeExpense(expenseData);
     }
     navigation.goBack();
   }

@@ -39,7 +39,6 @@ export const expenseSlice = createSlice({
     },
 
     setExpenses: (state, action: PayloadAction<IExpenseProps[]>) => {
-      console.log("payload===>", action.payload);
       state.expensesList = action.payload;
     },
   },

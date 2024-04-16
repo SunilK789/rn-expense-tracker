@@ -14,7 +14,7 @@ const ExpenseForm = ({ onCancel, onSubmit, isEditing, defaultExpense }) => {
     },
     Date: {
       value: getFormattedDate(
-        defaultExpense ? defaultExpense.date : new Date()
+        defaultExpense ? new Date(defaultExpense.date) : new Date()
       ),
       isValid: true,
     },

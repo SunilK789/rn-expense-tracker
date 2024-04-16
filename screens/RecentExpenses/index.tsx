@@ -15,15 +15,10 @@ const RecentExpenses = () => {
     (state: RootState) => state.expense.expensesList
   );
 
-  console.log("redux expenses===>", expenses);
-
-  //console.log("expenses===>", expenses);
-
   useEffect(() => {
     async function getExpenses() {
       const expenses = await fetchExpense();
-      console.log("uff===>", expenses);
-      dispatch(setExpenses(expenses));
+      dispatch(setExpenses(expenses.reverse()));
     }
 
     getExpenses();
@@ -31,11 +26,8 @@ const RecentExpenses = () => {
 
   function getRecentExpenses(expenses: IExpenseProps[]) {
     const recentExpenses = expenses.filter((expense: IExpenseProps) => {
-      //console.log("each expense===>", expense);
       const today = new Date();
       const date7DaysAgo = getDateMinusDays(today, 7);
-      console.log("expense.date===>", new Date(expense.date));
-      //console.log("date7DaysAgo===>", date7DaysAgo);
 
       return (
         new Date(expense.date) >= date7DaysAgo &&
@@ -47,12 +39,10 @@ const RecentExpenses = () => {
   }
 
   useEffect(() => {
-    //if (expenses.length > 0) {
-    console.log("expenses inuff2===>", expenses);
-    const recentExpenses = getRecentExpenses(expenses);
-    console.log("recentExpenses===>", recentExpenses);
-    setExpensesList(recentExpenses);
-    //}
+    if (expenses.length > 0) {
+      const recentExpenses = getRecentExpenses(expenses);
+      setExpensesList(recentExpenses);
+    }
   }, [expenses]);
 
   return (
