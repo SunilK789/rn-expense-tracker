@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DUMMY_EXPENSES } from "../../data/dummy-data";
 import { IExpenseProps } from "../../interfaces";
+import { fetchExpense } from "../../utils/http";
 
 interface ExpenseState {
   expensesList: IExpenseProps[];
 }
 
+async function getExpenses() {
+  const expenses = await fetchExpense();
+  return expenses;
+}
+
 const initialState: ExpenseState = {
-  expensesList: DUMMY_EXPENSES,
+  expensesList: [],
 };
 
 export const expenseSlice = createSlice({
@@ -31,10 +37,15 @@ export const expenseSlice = createSlice({
         (expense) => expense.id !== action.payload
       );
     },
+
+    setExpenses: (state, action: PayloadAction<IExpenseProps[]>) => {
+      console.log("payload===>", action.payload);
+      state.expensesList = action.payload;
+    },
   },
 });
 
-export const { addExpense, updateExpense, deleteExpense } =
+export const { addExpense, updateExpense, deleteExpense, setExpenses } =
   expenseSlice.actions;
 
 export default expenseSlice.reducer;

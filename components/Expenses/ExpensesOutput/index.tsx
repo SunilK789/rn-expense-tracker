@@ -4,8 +4,16 @@ import ExpensesSummary from "../ExpensesSummary";
 import ExpensesList from "../ExpensesList";
 import { DUMMY_EXPENSES } from "../../../data/dummy-data";
 import { styles } from "./style";
+import { IExpenseProps } from "../../../interfaces";
 
-const ExpensesOutput = ({ expenses, expensesPeriod, fallbackText }) => {
+interface IExpenseOutputProps{
+  expenses: IExpenseProps[],
+  expensesPeriod: string,
+  fallbackText: string
+}
+
+const ExpensesOutput: React.FC<IExpenseOutputProps> = ({ expenses, expensesPeriod, fallbackText }) => {
+  console.log("output===>", expenses);
   let content = <Text style={styles.infoText}>{fallbackText} </Text>;
   if (expenses.length > 0) {
     content = <ExpensesList expenses={expenses} />;

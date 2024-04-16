@@ -12,6 +12,7 @@ import {
 import ExpenseForm from "../../components/Expenses/ExpenseForm";
 import { IFormValuesProps } from "../../interfaces";
 import { RootState } from "../../store/redux/store";
+import { storeExpense } from "../../utils/http";
 
 const ManageExpense = ({ route, navigation }) => {
   const editExpenseId = route.params?.expenseId;
@@ -53,6 +54,8 @@ const ManageExpense = ({ route, navigation }) => {
           date: new Date(expenseData.Date),
         })
       );
+
+      storeExpense(expenseData);
     }
     navigation.goBack();
   }
