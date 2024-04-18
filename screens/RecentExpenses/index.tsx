@@ -7,10 +7,12 @@ import { RootState } from "../../store/redux/store";
 import { fetchExpense } from "../../utils/http";
 import { setExpenses } from "../../store/redux/expenseSlice";
 import LoadingOverlay from "../../components/UI/LoadingOverlay";
+import ErrorOverlay from "../../components/UI/ErrorOverlay";
 
 const RecentExpenses = () => {
   const [expensesList, setExpensesList] = useState<IExpenseProps[]>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const expenses: any = useSelector(
@@ -19,10 +21,15 @@ const RecentExpenses = () => {
 
   useEffect(() => {
     async function getExpenses() {
-      setIsLoading(true);
-      const expenses = await fetchExpense();
-      setIsLoading(false);
-      dispatch(setExpenses(expenses.reverse()));
+      setIsFetching(true);
+      try {
+        const expenses = await fetchExpense();
+        dispatch(setExpenses(expenses.reverse()));
+      } catch (error) {
+        setError("Something went wrong!");
+      }
+
+      setIsFetching(false);
     }
 
     getExpenses();
@@ -44,14 +51,22 @@ const RecentExpenses = () => {
 
   useEffect(() => {
     if (expenses.length > 0) {
-      setIsLoading(true);
+      setIsFetching(true);
       const recentExpenses = getRecentExpenses(expenses);
-      setIsLoading(false);
+      setIsFetching(false);
       setExpensesList(recentExpenses);
     }
   }, [expenses]);
 
-  if (isLoading) {
+  function errorHandler() {
+    setError(null);
+  }
+
+  if (error && !isFetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+
+  if (isFetching) {
     return <LoadingOverlay />;
   }
 

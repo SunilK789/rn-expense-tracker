@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import IconButton from "../../components/UI/IconButton";
 import { GlobalStyles } from "../../constants/styles";
 import { styles } from "./style";
@@ -17,8 +17,13 @@ import {
   storeExpense,
   updateExpenseFirebase,
 } from "../../utils/http";
+import LoadingOverlay from "../../components/UI/LoadingOverlay";
+import ErrorOverlay from "../../components/UI/ErrorOverlay";
 
 const ManageExpense = ({ route, navigation }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
   const editExpenseId = route.params?.expenseId;
   const isEditing = !!editExpenseId;
   const dispatch = useDispatch();
@@ -33,41 +38,64 @@ const ManageExpense = ({ route, navigation }) => {
   });
 
   function deleteExpenseHandler() {
-    deleteExpenseFirebase(editExpenseId);
-    dispatch(deleteExpense(editExpenseId));
-    navigation.goBack();
+    try {
+      setIsSubmitting(true);
+      deleteExpenseFirebase(editExpenseId);
+      dispatch(deleteExpense(editExpenseId));
+      setIsSubmitting(false);
+      navigation.goBack();
+    } catch (error) {
+      setError("Can not delete!");
+    }
   }
   function cancelHandler() {
     navigation.goBack();
   }
   async function editAddHandler(expenseData: any) {
-    console.log("expenseData===>", expenseData);
     const expense = {
       description: expenseData.Description,
       amount: expenseData.Amount,
-      date: new Date(expenseData.date),
+      date: new Date(expenseData.Date),
     };
+    setIsSubmitting(true);
 
-    if (isEditing) {
-      updateExpenseFirebase(editExpenseId, expense);
+    try {
+      if (isEditing) {
+        updateExpenseFirebase(editExpenseId, expense);
 
-      dispatch(
-        updateExpense({
-          id: editExpenseId,
-          ...expense,
-        })
-      );
-    } else {
-      const id = await storeExpense(expenseData);
-      dispatch(
-        addExpense({
-          id: id,
-          ...expense,
-        })
-      );
+        dispatch(
+          updateExpense({
+            id: editExpenseId,
+            ...expense,
+          })
+        );
+      } else {
+        const id = await storeExpense(expenseData);
+        dispatch(
+          addExpense({
+            id: id,
+            ...expense,
+          })
+        );
+      }
+
+      navigation.goBack();
+    } catch (error) {
+      setError("Can not add/edit data!");
     }
-    navigation.goBack();
+    setIsSubmitting(false);
   }
+
+  function errorHandler() {
+    setError(null);
+  }
+  if (error) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+  if (isSubmitting) {
+    return <LoadingOverlay />;
+  }
+
   return (
     <View style={styles.container}>
       <View>
